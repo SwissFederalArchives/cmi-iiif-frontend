@@ -1,0 +1,61 @@
+.aiiif-splitter {
+    background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
+    z-index: 999;
+}
+
+
+.aiiif-splitter-vertical > .aiiif-splitter {
+    cursor: col-resize;
+    min-width: 0.4rem;
+}
+
+.aiiif-splitter-horizontal > .aiiif-splitter {
+    min-height: 0.4rem;
+    cursor: row-resize;
+}
+
+
+.aiiif-splitter:hover {
+    background-color: black;
+}
+
+body.no-select {
+    user-select: none;
+}
+
+.aiiif-splitter-container {
+    display: flex;
+    flex-grow: 2;
+    overflow: hidden;
+}
+
+.aiiif-splitter-horizontal {
+    flex-direction: column;
+    height: 100%;
+}
+
+.aiiif-splitter-container > div {
+    display: flex;
+    align-items: stretch;
+}
+
+.aiiif-splitter-container > div.aiiif-b {
+    flex-grow: 2;
+}
+
+@media only screen and (max-width: 768px) {
+    .aiiif-splitter-container > div.aiiif-a {
+        flex-grow: 2;
+    }
+    .aiiif-splitter-container > div.aiiif-b {
+        flex-grow: 0;
+    }
+
+    #main > .aiiif-splitter-container > div.aiiif-a {
+        flex-grow: 0;
+    }
+    #main > .aiiif-splitter-container > div.aiiif-b {
+        flex-grow: 1;
+    }
+}
+

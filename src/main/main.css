@@ -1,0 +1,14 @@
+.aiiif-main {
+    display: flex;
+    flex: 1;
+}
+
+.aiiif-main h1:first-of-type {
+    margin: 0.4em 0.6em 0.3em;
+}
+
+@media (min-width: 768px) {
+    .aiiif-main h1:first-of-type {
+        margin: 1em 1em 1em;
+    }
+}

@@ -1,0 +1,127 @@
+.aiiif-item {
+    min-height: 45px;
+    width: 160px;
+    padding: 8px;
+    margin: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.aiiif-item.active,
+.aiiif-item:hover {
+    background-color: #f3f2f1;
+    transition: background-color 0.3s ease;
+}
+
+.aiiif-thumb-wrap {
+    position: relative;
+}
+
+.aiiif-item-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 72px;
+    height: 72px;
+    background-position: center;
+    margin: 0 auto;
+}
+
+.aiiif-item-thumbnail-tooltip {
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
+    background-position: center;
+    margin: 0 auto;
+}
+
+.aiiif-item-thumbnail svg, .aiiif-item-thumbnail .svg-inline--fa {
+    width: 90%;
+    height: 90%;
+}
+
+.aiiif-item:hover .aiiif-item-metadata,
+.aiiif-item.active .aiiif-item-metadata {
+    display: block;
+}
+
+.aiiif-item-metadata {
+    display: none;
+    position: absolute;
+    right: -0.75em;
+    top: -0.75em;
+    appearance: none;
+    padding: 0.5em;
+    margin: 0;
+    border: none;
+    background: none;
+    line-height: 1;
+}
+
+.aiiif-item-metadata:hover {
+    opacity: 0.8;
+}
+
+.aiiif-item-thumbnail .fa-folder {
+    color: #7cd6fa;
+}
+
+.aiiif-item-thumbnail .fa-file-alt {
+    color: #a9a9a9;
+}
+
+.aiiif-item-label {
+    line-height: 14px;
+    text-align: center;
+    word-break: break-all;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+.aiiif-list-view > .aiiif-item {
+    width: 100%;
+    text-align: left;
+    padding: 4px 8px;
+    margin: 2px;
+    min-height: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.aiiif-list-view > .aiiif-item .aiiif-item-thumbnail {
+    width: 42px;
+    height: 42px;
+    margin: 0;
+    
+}
+
+
+.aiiif-list-view > .aiiif-item .aiiif-item-label {
+    margin: 0 0 0 6px;
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.aiiif-bar-search {
+    display: flex;
+    margin-right: auto;
+    flex-grow: 2;
+}
+
+.aiiif-bar-search > div {
+    margin: auto 0;
+}
+
+.aiiif-bar-search > .MuiInputBase-root {
+    width: 100%;
+}
+
+.aiiif-bar-search .fa-magnifying-glass {
+    color: #484646;
+    margin-right: 6px;
+}

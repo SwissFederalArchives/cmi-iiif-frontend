@@ -1,0 +1,27 @@
+#Basic auth for dev/int and nine hostnames
+SetEnvIfNoCase Host ^viewer\.recherche\.bar\.admin\.ch\.4eyes06\.nine\.ch env_is_protected
+
+AuthType Basic
+AuthName "Protected"
+AuthBasicProvider file
+AuthUserFile /home/www-data/.htpasswddefault
+Require expr %{REQUEST_URI} =~ m#^/\.well-known/acme-challenge/#i
+Require valid-user
+
+# Apache < 2.3
+<IfModule !mod_authz_core.c>
+    Order Allow,Deny
+    Allow from all
+    Deny from env=env_is_protected
+    Satisfy any
+</IfModule>
+
+# Apache ≥ 2.3
+<IfModule mod_authz_core.c>
+    <RequireAny>
+        <RequireAll>
+            Require not env env_is_protected
+            Require all granted
+        </RequireAll>
+    </RequireAny>
+</IfModule>

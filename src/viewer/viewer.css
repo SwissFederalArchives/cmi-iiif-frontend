@@ -1,0 +1,36 @@
+.aiiif-viewer {
+    background-color: #404346;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    max-height: 100vh;
+    height: 100%;
+    border: 0;
+}
+
+.aiiif-plain-text {
+    background-color: #ffffff;
+    padding: 30px;
+    width: 540px;
+    margin: 0 auto;
+    overflow-y: auto;
+    align-self: center;
+    max-height: 90%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.aiiif-viewer-html {
+    background-color: #ffffff;
+    margin: 0 auto;
+    overflow-y: auto;
+    align-self: center;
+    max-height: 90%;
+    padding: 18px;
+    margin: 18px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mirador-viewer {
+    overflow: visible!important;
+}

@@ -1,0 +1,35 @@
+.aiiif-topbar {
+    height: 40px;
+    padding: 10px;
+    background: linear-gradient(117deg,#fefefd,#fefefd 20%,#fafaf8 40%,#fafaf8);
+    justify-content: center;
+    display: flex;
+    z-index: 1;
+    width: 100%;
+}
+
+.aiiif-bar {
+    display: flex;
+    height: 40px;
+    background-color: #f3f2f1;
+    position: sticky;
+    padding: 0 8px;
+}
+
+.aiiif-icon-button {
+    margin: 0 6px;
+    cursor: pointer;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+}
+
+.aiiif-icon-button p {
+    margin: 0;
+}
+
+.aiiif-icon-button  > svg {
+    margin-right: 2px;
+}

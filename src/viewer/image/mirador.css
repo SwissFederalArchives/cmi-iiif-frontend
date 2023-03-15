@@ -1,0 +1,33 @@
+.aiiif-mirador {
+    height: 100%;
+    font-family: "Frutiger Neue", sans-serif;
+}
+
+.aiiif-mirador .jss385,
+.aiiif-mirador .jss435,
+.aiiif-mirador .MuiTypography-overline,
+.aiiif-mirador .MuiTypography-h4,
+.aiiif-mirador .MuiTypography-subtitle2,
+.aiiif-mirador .MuiTypography-body1,
+.aiiif-mirador .MuiTypography-body2,
+.aiiif-mirador .MuiMenuItem-root,
+.aiiif-mirador .MuiListSubheader-root,
+.aiiif-mirador .MuiTypography-caption,
+.aiiif-mirador .MuiTypography-h1,
+.aiiif-mirador .MuiFab-root,
+.aiiif-mirador .MuiTooltip-popper,
+.aiiif-mirador .MuiTypography-h3 {
+    font-family: "Frutiger Neue", sans-serif;
+}
+
+.MuiTooltip-popper > div {
+    font-size: 0.9rem!important;
+}
+
+.aiiif-mirador .mirador-companion-window-header h3 {
+    margin-bottom: 0!important;
+}
+
+.aiiif-mirador header {
+    padding: 0;
+}

@@ -1,0 +1,19 @@
+{
+  "de": {
+    "close": "Schliessen",
+    "collection": "Kollektion",
+    "multipartCollection": "Multipart-Kollektion",
+    "showCollection": "Kollektion anzeigen",
+    "totalCollections": "{{count}} Kollektion",
+    "totalCollections_plural": "{{count}} Kollektionen",
+    "totalManifests": "{{count}} Manifest",
+    "totalManifests_plural": "{{count}} Manifeste"
+  },
+  "fr": {
+    "close": "Fermer"
+  },
+  "it": {
+    "totalManifests": "{{count}} manifesto",
+    "totalManifests_plural": "{{count}} manifesti"
+  }
+}

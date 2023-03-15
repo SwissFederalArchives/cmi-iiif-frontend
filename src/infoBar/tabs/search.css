@@ -1,0 +1,70 @@
+.aiiif-main > .aiiif-a {
+    position: relative;
+}
+
+.aiiif-navigation {
+    background-color: #EDECED;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.aiiif-navigation-bar {
+    position: sticky;
+    top: 0;
+    background-color: gray;
+    opacity: 0.7;
+}
+
+.aiiif-navigation-bar > svg {
+    margin: 4px;
+    cursor: pointer;
+}
+
+.aiiif-search {
+    padding: 6px 12px;
+    width: 100%;
+}
+
+.aiiif-search-result-item {
+    line-height: 1.6rem;
+    cursor: pointer;
+    text-align: left;
+    margin: 10px 0;
+}
+
+.aiiif-search-result-item > p {
+    margin: 10px 0;
+}
+
+.aiiif-search-input {
+    margin-bottom: 12px !important;
+}
+
+.aiiif-search-badge {
+    font-size: 0.8rem;
+    background-color: #ffff00;
+    border-radius: 20px;
+    padding: 2px 6px;
+    margin-right: 4px;
+}
+.aiiif-search-result-item-active .aiiif-search-badge {
+    background-color: #7CD6FA;
+}
+
+.aiiif-highlight {
+    background-color: #ffff00;
+    opacity: 0.2;
+}
+
+.aiiif-highlight.active {
+    background-color: #7CD6FA;
+    border: 2px solid #064e6c;
+}
+
