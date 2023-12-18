@@ -1,3 +1,5 @@
 {
-    "ALLOWED_ORIGINS": "@@CMI.Web.Frontend.AllowedOrigins@@"
-}
+    "ALLOWED_ORIGINS": "@@CMI.Web.Frontend.AllowedOrigins@@",
+    "SupportedLanguages": "@@CMI.Web.Frontend.SupportedLanguages@@",
+    "HasBreadcrumbs": "@@CMI.Web.Frontend.HasBreadcrumbs@@"
+}

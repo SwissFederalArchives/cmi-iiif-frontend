@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Translation } from "react-i18next";
-import logo from '../images/logo-CH.svg';
+import logo from '../images/logo.svg';
 
 require('./footer.css');
 

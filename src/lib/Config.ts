@@ -1,6 +1,7 @@
 import TouchDetection from './TouchDetection';
 import IConfigParameter from '../interface/IConfigParameter';
 import EnvironmentConfig from '../fetch/EnvironmentConfig';
+import { forEachResolvedProjectReference } from 'ts-loader/dist/instances';
 
 class Config {
   private readonly id: string = '';
@@ -31,12 +32,14 @@ class Config {
 
   private readonly htmlViewer: boolean;
 
+  private readonly supportedLanguages: string[] = ['*'];
   private readonly translations: { [key: string]: string } = {
     de: 'Deutsch',
     fr: 'Français',
     it: 'Italiano',
     en: 'English',
   };
+  private readonly hasBreadcrumbs: boolean;
 
   constructor(config: IConfigParameter) {
     const envConfig = EnvironmentConfig.get();
@@ -44,6 +47,8 @@ class Config {
     this.language = config.language ? config.language : window.navigator.language;
     this.manifest = config.manifest ? config.manifest : '';
     this.allowedOrigins = envConfig?.ALLOWED_ORIGINS ? envConfig?.ALLOWED_ORIGINS?.split(',').map((o:string) => o.trim()) : ['*'];
+    this.supportedLanguages = envConfig?.SupportedLanguages ? envConfig?.SupportedLanguages?.split(',').map((o:string) => o.trim()) : ['DE'];
+    this.hasBreadcrumbs = envConfig?.HasBreadcrumbs ?  envConfig?.HasBreadcrumbs.toLowerCase() === 'true' : true;
     this.disableSharing = config.disableSharing ? config.disableSharing : false;
     this.disableDownload = config.disableDownload ? config.disableDownload : false;
     this.disableLanguageSelection = config.disableLanguageSelection ? config.disableLanguageSelection : false;
@@ -51,7 +56,7 @@ class Config {
     this.hideUnbranchedTrees = config.hideUnbranchedTrees ? config.hideUnbranchedTrees : false;
     this.externalSearchUrl = config.externalSearchUrl;
     this.htmlViewer = config.htmlViewer ?? false;
-  }
+}
 
   getSplitterWidth(folded: boolean) {
     if (TouchDetection.isTouchDevice()) {
@@ -93,12 +98,21 @@ class Config {
     return this.translations;
   }
 
+  getSupportedLanguages() {
+    return this.supportedLanguages;
+  }
+
+
   getManifest() {
     return this.manifest;
   }
 
   getDisableSharing() {
     return this.disableSharing;
+  }
+
+  getBreadcrumbsShow() {
+    return this.hasBreadcrumbs.valueOf();
   }
 
   getDisableDownload() {
@@ -148,6 +162,7 @@ class Config {
   getHtmlViewer() {
     return this.htmlViewer;
   }
+
 }
 
 export default Config;

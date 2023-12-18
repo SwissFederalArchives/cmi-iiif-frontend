@@ -24,23 +24,22 @@ class LanguageSwitcher extends React.Component<any, IState> {
     }
 
     render() {
-        const languages: object = global.config.getTranslations();
-
+        const supportedLanguages = global.config.getSupportedLanguages();
         return (
             <nav className="nav-lang noborder">
                 <ul>
-                    {Object.entries(languages).map(([langKey, langLabel]) => {
+                    {Object.entries(supportedLanguages).map(([langKey]) => {
                         const isActive = i18n.language === langKey;
                         return (
-                            <li key={langKey}>
+                            <li key={langKey.toLowerCase()}>
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                <a 
+                                <a
                                     href="#"
-                                    className={isActive ? 'active': ''} 
-                                    onClick={(ev) => {ev.preventDefault(); this.changeLanguage(langKey)}} 
-                                    title={langLabel} 
-                                    aria-label={langLabel}
-                                >{langKey.toUpperCase()}</a>
+                                    className={isActive ? 'active': ''}
+                                    onClick={(ev) => {ev.preventDefault(); this.changeLanguage(langKey.toLowerCase())}}
+                                    title={langKey}
+                                    aria-label={langKey}
+                                >{supportedLanguages[langKey].toUpperCase()}</a>
                             </li>
                         );
                     })}
@@ -59,7 +58,8 @@ class LanguageSwitcher extends React.Component<any, IState> {
 
     changeLanguage(code: string) {
         this.close();
-        i18n.changeLanguage(code);
+        const supportedLanguages = global.config.getSupportedLanguages();
+        i18n.changeLanguage( supportedLanguages[code].toLowerCase());
     }
 }
 
