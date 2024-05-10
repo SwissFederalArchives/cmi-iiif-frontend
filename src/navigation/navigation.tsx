@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Translation } from 'react-i18next';
 import Main from '../main/main'; 
 
-import logoMobile from '../images/logo.svg';
+import logoMobile from '../images/swiss.svg';
 
 require('./navigation.css');
 

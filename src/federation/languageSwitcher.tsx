@@ -24,22 +24,23 @@ class LanguageSwitcher extends React.Component<any, IState> {
     }
 
     render() {
-        const supportedLanguages = global.config.getSupportedLanguages();
+        const languages: object = global.config.getTranslations();
+
         return (
             <nav className="nav-lang noborder">
                 <ul>
-                    {Object.entries(supportedLanguages).map(([langKey]) => {
+                    {Object.entries(languages).map(([langKey, langLabel]) => {
                         const isActive = i18n.language === langKey;
                         return (
-                            <li key={langKey.toLowerCase()}>
+                            <li key={langKey}>
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                <a
+                                <a 
                                     href="#"
-                                    className={isActive ? 'active': ''}
-                                    onClick={(ev) => {ev.preventDefault(); this.changeLanguage(langKey.toLowerCase())}}
-                                    title={langKey}
-                                    aria-label={langKey}
-                                >{supportedLanguages[langKey].toUpperCase()}</a>
+                                    className={isActive ? 'active': ''} 
+                                    onClick={(ev) => {ev.preventDefault(); this.changeLanguage(langKey)}} 
+                                    title={langLabel} 
+                                    aria-label={langLabel}
+                                >{langKey.toUpperCase()}</a>
                             </li>
                         );
                     })}
@@ -58,8 +59,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
 
     changeLanguage(code: string) {
         this.close();
-        const supportedLanguages = global.config.getSupportedLanguages();
-        i18n.changeLanguage( supportedLanguages[code].toLowerCase());
+        i18n.changeLanguage(code);
     }
 }
 

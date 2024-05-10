@@ -35,6 +35,7 @@ export default function LanguageSwitcher() {
     const languages: ReactElement[] = [];
     const translations = global.config.getTranslations();
     for (const i in translations) {
+
         if (!translations.hasOwnProperty(i)) {
             continue;
         }

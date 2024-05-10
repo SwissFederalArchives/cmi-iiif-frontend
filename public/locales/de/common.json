@@ -1,5 +1,6 @@
 {
-  "documentTitle": "Viewer",  
+  "documentTitle": "Viewer des Bundesarchivs",
+  
   "attribution": "Attribution",
   "description": "Beschreibung",
   "download": "Download",
@@ -27,11 +28,11 @@
   "close": "Schliessen",
   "closeTree": "Struktur ausblenden",
   "openTree":  "Struktur einblenden",
-  "headerProjectTitle": "Projekttitel im Header",
-  "headerProjectSubtitle": "Untertitel im Header",
-  "footerTitle": "Titel in der Fusszeile",
+  "headerProjectTitle": "Schweizerisches Bundesarchiv",
+  "headerProjectSubtitle": "Viewer",
+  "footerTitle": "Schweizerisches Bundesarchiv BAR",
   "footerTermsAndConditionsLabel": "Rechtliche Hinweise",
-  "footerTermsAndConditionsLink": "https://link-auf-rechtliche-hinweise",
+  "footerTermsAndConditionsLink": " https://www.admin.ch/gov/de/start/rechtliches.html",
   "footerContactLabel": "Kontakt",
-  "footerContactLink": "https://link-auf-kontakte"
+  "footerContactLink": "https://www.recherche.bar.admin.ch/recherche/#/de/kontakt"
 }

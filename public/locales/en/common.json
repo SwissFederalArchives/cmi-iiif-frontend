@@ -1,5 +1,6 @@
 {
-  "documentTitle": "Viewer",
+  "documentTitle": "Viewer of the Federal Archives",
+
   "attribution": "Attribution",
   "description": "Description",
   "download": "Download",
@@ -27,11 +28,11 @@
   "close": "Close",
   "closeTree": "Hide the structure",
   "openTree":  "Show structure",
-  "headerProjectTitle": "Project Title im Header",
-  "headerProjectSubtitle": "Untertitel im Header",
-  "footerTitle": "footer Title",
+  "headerProjectTitle": "Swiss Federal Archives",
+  "headerProjectSubtitle": "Viewer",
+  "footerTitle": "Swiss Federal Archives SFA",
   "footerTermsAndConditionsLabel": "Legal framework",
-  "footerTermsAndConditionsLink": "https://link-auf-rechtliche-hinweise",
+  "footerTermsAndConditionsLink": "https://www.admin.ch/gov/en/start/terms-and-conditions.html",
   "footerContactLabel": "Contact",
-  "footerContactLink": "https://link-auf-kontakte"
+  "footerContactLink": "https://www.recherche.bar.admin.ch/recherche/#/en/contact"
 }
