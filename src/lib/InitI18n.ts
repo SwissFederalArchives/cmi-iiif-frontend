@@ -12,7 +12,7 @@ export default function InitI18n() {
             escapeValue: false 
         },
         backend: {
-            loadPath: `locales/{{lng}}/common.json`,
+            loadPath: `vendor/current/locales/{{lng}}/common.json`,
         },
         detection: {
             // The order how the language gets detected. First entry has the highest precedence.

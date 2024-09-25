@@ -1,3 +1,8 @@
 {
-    "ALLOWED_ORIGINS": "@@CMI.Web.Frontend.AllowedOrigins@@"
+    "AllowedOrigins": "@@CMI.Web.Frontend.AllowedOrigins@@",
+    "SupportedLanguages": "@@CMI.Web.Frontend.SupportedLanguages@@",
+    "HasBreadcrumbs": "@@CMI.Web.Frontend.HasBreadcrumbs@@",
+    "BookViewShow": "@@CMI.Web.Frontend.BookViewShow@@",
+    "SearchApiBaseUrl": "@@CMI.Web.Frontend.SearchApiBaseUrl@@",
+    "SearchApiRows": "@@CMI.Web.Frontend.SearchApiRows@@"
 }

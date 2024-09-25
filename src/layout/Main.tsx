@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Alert from '../Alert';
 import Login from '../Login';
-import FederationHeader from '../federation/header';
-import FederationFooter from '../federation/footer';
+import Header from '../header/header';
+import Footer from '../footer/footer';
 import Content1 from './Content1';
 
 export default function Main() {
@@ -10,11 +10,11 @@ export default function Main() {
     <>
       <Alert />
       <Login />
-      <FederationHeader />
+      <Header />
       <main id="main">
         <Content1 />
       </main>
-      <FederationFooter />
+      <Footer />
     </>
   );
 }

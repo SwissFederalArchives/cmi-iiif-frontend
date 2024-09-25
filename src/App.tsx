@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
 import ManifestHistory from './lib/ManifestHistory';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -13,10 +13,12 @@ import ManifestData from './entity/ManifestData';
 import { getLocalized, isSingleManifest } from './lib/ManifestHelpers';
 import InitI18n from './lib/InitI18n';
 import { AppContext } from './AppContext';
-import { AnnotationType, HitType } from './fetch/SearchApi';
 import Main from './layout/Main';
 import { IAlertContent } from './Alert';
 import EnvironmentConfig from './fetch/EnvironmentConfig';
+import { ISearchApiFetchResponse, useSearchApi } from './fetch/SearchApi';
+import { BrowserRouter } from 'react-router-dom';
+import SearchUtility from './search/util';
 
 interface IProps {
   config: IConfigParameter;
@@ -40,7 +42,7 @@ export default function App(props: IProps) {
   const [treeDate, setTreeDate] = useState<number>(Date.now());
   const [authDate, setAuthDate] = useState<number>(0);
   let initialQ = PresentationApi.getGetParameter('q') ?? '';
-  let initialTab = initialQ !== '' ? 'search' : PresentationApi.getGetParameter('tab') ?? 'metadata';
+  let initialTab = PresentationApi.getGetParameter('tab') ?? 'search';
   let initialViewerVisibility = PresentationApi.getGetParameter('viewer') === '0' ? false : true;
   const initialIsMobile: boolean = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
   const [isMobile, setIsMobile] = useState<boolean>(initialIsMobile);
@@ -48,64 +50,91 @@ export default function App(props: IProps) {
   const [q, setQ] = useState<string>(initialQ);
   const [viewerVisibility, setViewerVisibility] = useState<boolean>(initialViewerVisibility);
   const [page, setPage] = useState<number>(0);
-  const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
-  const [searchResult, setSearchResult] = useState<HitType[]>([]);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false);
+  const [searchLoadingMore, setSearchLoadingMore] = useState<boolean>(false);
+  const [searchLoadingMoreUrl, setSearchLoadingMoreUrl] = useState<string>('');
+  const [searchError, setSearchError] = useState<Error | undefined>(undefined);
+  const [searchResult, setSearchResult] = useState<ISearchApiFetchResponse | undefined>(undefined);
+  const [currentSearchFolder, setCurrentSearchFolder] = useState<IManifestData | undefined>(undefined);
+  const [searchContext, setSearchContext] = useState<'all' | 'selected'>('all');
+  const [lastSearchDate, setLastSearchDate] = useState<number>(0);
   const [alert, setAlert] = useState<IAlertContent | undefined>(undefined);
   const [lastItemActivationDate, setLastItemActivationDate] = useState<number>(0);
   const [treeExpanded, setTreeExpanded] = useState<boolean>(!initialIsMobile);
   const [envConfigLoaded, setEnvConfigLoaded] = useState<boolean>(false);
   const isMobileHandler = (event: any) => setIsMobile(event.matches);
 
-  const setCurrentManifest0 = (id?: string) => {
-    if (!id) {
-      id = PresentationApi.getIdFromCurrentUrl();
-    }
-    if (!id) {
-      return;
-    }
-    const url = id;
+  const rootManifest = PresentationApi.getRootManifest();
 
-    PresentationApi.get(url)
-      .then((currentManifest: IManifestData) => {
-        ManifestHistory.pageChanged(currentManifest.request ?? currentManifest.id, getLocalized(currentManifest.label));
+  const { performSearch, loadMore, resetSearch } = useSearchApi({
+    searchResult,
+    setSearchResult,
+    setSearchLoading,
+    setSearchLoadingMore,
+    setSearchError,
+  });
 
-        if (currentManifest.type === 'Collection') {
-          const currentFolder = currentManifest;
-          setPage(0);
-          setCurrentManifest(currentManifest);
-          setCurrentFolder(currentFolder);
-          setCurrentAnnotation(undefined);
-          setSearchResult([]);
-          if (!currentManifest.restricted) {
-            TreeBuilder.buildCache(currentFolder.id, () => {
-              setTreeDate(Date.now());
-            });
-          }
-        } else if (!isSingleManifest(currentManifest)) {
-          PresentationApi.get(currentManifest.parentId)
-            .then((currentFolder: IManifestData) => {
-              setPage(0);
-              setCurrentManifest(currentManifest);
-              setCurrentFolder(currentFolder);
-              setCurrentAnnotation(undefined);
-              setSearchResult([]);
+  const setCurrentManifest0 = (id?: string): Promise<IManifestData> => {
+    return new Promise((resolve, reject) => {
+      if (!id) {
+        id = PresentationApi.getIdFromCurrentUrl();
+      }
+      if (!id) {
+        reject('No ID provided');
+        return;
+      }
+      const url = id;
+
+      PresentationApi.get(url)
+        .then((currentManifest: IManifestData) => {
+          ManifestHistory.pageChanged(
+            currentManifest.request ?? currentManifest.id,
+            getLocalized(currentManifest.label)
+          );
+
+          if (currentManifest.type === 'Collection') {
+            const currentFolder = currentManifest;
+            setPage(0);
+            setCurrentManifest(currentManifest);
+            setCurrentFolder(currentFolder);
+            if (!currentManifest.restricted) {
               TreeBuilder.buildCache(currentFolder.id, () => {
                 setTreeDate(Date.now());
+                resolve(currentManifest);
               });
-            })
-            .catch((r) => setAlert(r));
-        } else {
-          const currentFolder = new ManifestData();
-          currentFolder.type = 'Manifest';
-          setCurrentManifest(currentManifest);
-          setCurrentFolder(currentFolder);
-        }
+            } else {
+              resolve(currentManifest);
+            }
+          } else if (!isSingleManifest(currentManifest)) {
+            PresentationApi.get(currentManifest.parentId)
+              .then((currentFolder: IManifestData) => {
+                setPage(0);
+                setCurrentManifest(currentManifest);
+                setCurrentFolder(currentFolder);
+                TreeBuilder.buildCache(currentFolder.id, () => {
+                  setTreeDate(Date.now());
+                  resolve(currentManifest);
+                });
+              })
+              .catch((error) => {
+                setAlert(error);
+                reject(error);
+              });
+          } else {
+            const currentFolder = new ManifestData();
+            currentFolder.type = 'Manifest';
+            setCurrentManifest(currentManifest);
+            setCurrentFolder(currentFolder);
+            resolve(currentManifest);
+          }
 
-        document.title = i18n.t('common:documentTitle');
-      })
-      .catch((r) => {
-        setAlert(r);
-      });
+          document.title = i18n.t('common:documentTitle');
+        })
+        .catch((error) => {
+          setAlert(error);
+          reject(error);
+        });
+    });
   };
 
   const setTab0 = (t: string) => {
@@ -150,6 +179,25 @@ export default function App(props: IProps) {
   }, []);
 
   useEffect(() => {
+    if (rootManifest && q && q !== '') {
+      const newCurrentSearchFolder = searchContext === 'selected' ? currentFolder : rootManifest;
+      if (newCurrentSearchFolder) {
+        setCurrentSearchFolder(newCurrentSearchFolder);
+        performSearch({ searchUrl: SearchUtility.getSearchUrl(newCurrentSearchFolder), q });
+      }
+    } else if (!q) {
+      resetSearch();
+      setCurrentSearchFolder(undefined);
+    }
+  }, [rootManifest?.id, lastSearchDate]);
+
+  useEffect(() => {
+    if (currentSearchFolder && searchResult && searchLoadingMoreUrl) {
+      loadMore({ loadMoreUrl: searchLoadingMoreUrl });
+    }
+  }, [searchLoadingMoreUrl]);
+
+  useEffect(() => {
     const tokenReceived = () => {
       setAuthDate(Date.now());
       setCurrentManifest0();
@@ -179,7 +227,7 @@ export default function App(props: IProps) {
       i18n.off('languageChanged', refresh);
     };
   }, []);
-
+  const withBookView = global?.config?.getBookViewShow();
   const appContextValue = {
     treeDate,
     tab,
@@ -192,10 +240,22 @@ export default function App(props: IProps) {
     setCurrentFolder,
     authDate,
     setAuthDate,
-    currentAnnotation,
-    setCurrentAnnotation,
     searchResult,
     setSearchResult,
+    searchLoadingMoreUrl,
+    setSearchLoadingMoreUrl,
+    searchLoading,
+    setSearchLoading,
+    searchLoadingMore,
+    setSearchLoadingMore,
+    searchError,
+    setSearchError,
+    currentSearchFolder,
+    setCurrentSearchFolder,
+    searchContext,
+    setSearchContext,
+    lastSearchDate,
+    setLastSearchDate,
     q,
     setQ: setQ0,
     viewerVisibility,
@@ -207,6 +267,7 @@ export default function App(props: IProps) {
     treeExpanded,
     setTreeExpanded,
     isMobile,
+    withBookView,
   };
 
   if (!envConfigLoaded) {
@@ -216,11 +277,13 @@ export default function App(props: IProps) {
   return (
     <React.StrictMode>
       <Suspense fallback={null}>
-        <AppContext.Provider value={appContextValue}>
-          <I18nextProvider i18n={i18n}>
-            <Main />
-          </I18nextProvider>
-        </AppContext.Provider>
+        <BrowserRouter>
+          <AppContext.Provider value={appContextValue}>
+            <I18nextProvider i18n={i18n}>
+              <Main />
+            </I18nextProvider>
+          </AppContext.Provider>
+        </BrowserRouter>
       </Suspense>
     </React.StrictMode>
   );

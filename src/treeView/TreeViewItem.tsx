@@ -10,6 +10,7 @@ import TreeBuilder from './TreeBuilder';
 import { AppContext } from '../AppContext';
 import Config from '../lib/Config';
 import { FolderIcon } from '../icons';
+import SearchUtility, { SEARCH_ENTITY_DIRECTORY } from '../search/util';
 
 interface IPros {
   id: string;
@@ -23,10 +24,11 @@ declare let global: {
 };
 
 export default function TreeViewItem(props: IPros) {
-  const { setCurrentManifest, currentFolder, setAlert, isMobile, setTreeExpanded } = useContext(AppContext);
+  const { setCurrentManifest, currentFolder, setAlert, isMobile, setTreeExpanded, searchResult, currentSearchFolder } =
+    useContext(AppContext);
 
   const [children, setChildren] = useState<IManifestReference[] | undefined>(props.children);
-  const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id] ?? false);
+  const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id]?.expanded ?? false);
 
   const isSubTreeMissing = (): boolean => {
     if (!children) {
@@ -71,10 +73,10 @@ export default function TreeViewItem(props: IPros) {
 
   const toggleCaret = () => {
     if (isOpen) {
-      TreeBuilder.cache[props.id] = false;
+      TreeBuilder.cache[props.id].expanded = false;
       setIsOpen(false);
     } else {
-      TreeBuilder.cache[props.id] = true;
+      TreeBuilder.cache[props.id].expanded = true;
       if (isSubTreeMissing()) {
         loadSubTree();
       } else {
@@ -93,6 +95,17 @@ export default function TreeViewItem(props: IPros) {
     fontSize: 14,
   };
 
+  const isInSearchRootline = TreeBuilder.isInRootline(props.id, currentSearchFolder?.id);
+  const childCollections = TreeBuilder.getCollectionsByParentId(props.id);
+  const numSearchResults = SearchUtility.filterSearchResultsByManifestId(
+    props.id,
+    searchResult,
+    SEARCH_ENTITY_DIRECTORY
+  ).length;
+  const numChildCollectionsSearchResults = childCollections.reduce((acc, child) => {
+    return acc + SearchUtility.filterSearchResultsByManifestId(child, searchResult, SEARCH_ENTITY_DIRECTORY).length;
+  }, 0);
+
   if (children?.length === 0) {
     classNameCaret += ' aiiif-no-caret';
   } else {
@@ -106,6 +119,9 @@ export default function TreeViewItem(props: IPros) {
   }
   if (currentFolder && props.id === currentFolder.id) {
     className += ' aiiif-current';
+  }
+  if ((numSearchResults > 0 || numChildCollectionsSearchResults > 0)&& isInSearchRootline) {
+    className += ' aiiif-has-search-results';
   }
   const label = getLocalized(props.label);
   const childrenElements: JSX.Element[] = [];
@@ -140,7 +156,7 @@ export default function TreeViewItem(props: IPros) {
           {caret}
         </div>
         <div className={classNameFolderIcon}>
-            <FolderIcon />
+          <FolderIcon />
         </div>
         <div className="aiiif-treeview-label" onClick={onClickItem}>
           {label}

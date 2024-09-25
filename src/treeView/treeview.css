@@ -13,17 +13,47 @@
 }
 
 .aiiif-treeview-item {
+    position: relative;
     width: 100%;
-    padding: 2px 6px;
+    padding: 2px 30px 2px 6px;
     cursor: pointer;
     display: flex;
     margin-bottom: 5px;
+}
+
+.aiiif-treeview-item.aiiif-has-search-results {
+    background-color: rgba(255, 255, 0, 0.5);
+    border-radius: 2px;
+    box-shadow: inset 0 0 1px #999;
 }
 
 .aiiif-treeview-item.aiiif-current {
     background: #e5e5e5;
     border-radius: 2px;
     box-shadow: inset 0 0 1px #999;
+}
+
+.aiiif-treeview-item.aiiif-current.aiiif-has-search-results {
+    background: rgba(255, 255, 0, 1);
+    border-radius: 2px;
+    box-shadow: inset 0 0 1px #999;
+}
+
+.aiiif-treeview-search-num {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    background-color: #006699;
+    color: white;
+    display: inline-flex;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+    line-height: 0;
 }
 
 .aiiif-no-caret {

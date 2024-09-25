@@ -1,0 +1,110 @@
+/*------------------------------------------------------
+  Hyperlinks
+--------------------------------------------------------*/
+cmi-viaduc-simple-search-page a, search-result a, simple-hit a,
+#mainContent p a, .edit-mode p a {
+    text-decoration: none;
+    border-bottom: solid 0.0625rem rgba(0,0,0,.6);
+    transition: color 80ms cubic-bezier(0.42, 0, 0.58, 1),border-bottom-color 80ms cubic-bezier(0.42, 0, 0.58, 1);
+    border-bottom-color: #B7352D;
+    color: black;
+    visited: black;
+}
+
+#mainContent a, .edit-mode a, .pull-right a {
+    text-decoration: none;
+    transition: color 80ms cubic-bezier(0.42, 0, 0.58, 1),border-bottom-color 80ms cubic-bezier(0.42, 0, 0.58, 1);
+    border-bottom-color: #B7352D;
+    color: black;
+    visited: black;
+}
+
+    #mainContent a:hover, .pull-right a:hover {
+        color: #B7352D;
+    }
+
+/*------------------------------------------------------
+  Navigation
+--------------------------------------------------------*/
+
+cmi-viaduc-nav-content a:hover,
+cmi-viaduc-nav-content a:focus
+.nav-main.yamm .nav > .open > a {
+    color: #B7352D !important;
+    border-top: #B7352D !important;
+}
+
+.nav-main.yamm .nav > .open > a, .nav-main.yamm .nav > .open > a:hover {
+    z-index: 9999 !important;
+    background: #fff !important;
+    border-top: 5px solid #B7352D !important;
+    margin-top: -5px !important;
+    height: 75px !important;
+}
+
+.nav-main {
+    border-top-color: #B7352D !important;
+}
+
+.nav-page-list li.active:before {
+    background: #B7352D !important;
+}
+
+.yamm-content h4 a {
+    text-decoration: none;
+    transition: color 80ms cubic-bezier(0.42, 0, 0.58, 1),border-bottom-color 80ms cubic-bezier(0.42, 0, 0.58, 1);
+    color: #B7352D;
+    visited: #B7352D;
+}
+
+.disabled {
+    color: #757575 !important;
+}
+
+.yamm-content a span, cmi-viaduc-detail-utilities a:hover,
+cmi-viaduc-simple-search-page a:hover, search-result a:hover, simple-hit a:hover,
+#mainContent p a:hover {
+    color: #B7352D !important;
+}
+
+.yamm-content a:hover, .nav-lang a:hover {
+    border: none !important;
+    color: #B7352D !important;
+}
+
+/*------------------------------------------------------
+  Hyperlinks without the bottom border of the default Hyperlink
+--------------------------------------------------------*/
+
+cmi-viaduc-detail-utilities a {
+    border-bottom: none !important;
+}
+
+div .card a {
+    border-bottom-color: rgba(0, 0, 0, 0.125) !important;
+}
+
+    div .card a span {
+        border-bottom-color: #B7352D !important;
+    }
+
+
+/*------------------------------------------------------
+  Control Color, border-color and borders
+--------------------------------------------------------*/
+
+.treecrumb .dropdown-toggle:focus {
+    color: #B7352D !important;
+}
+
+cmi-viaduc-footer a:visited {
+    color: black;
+}
+
+
+/*------------------------------------------------------
+ Header center only HSA
+--------------------------------------------------------*/
+.brand h1 {
+    padding-top: 1.25em;
+}

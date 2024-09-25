@@ -11,9 +11,11 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource, LabelValuePair, PropertyValue} from "manifesto.js";
+import {IIIFResource, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
 import i18n from "i18next";
+import * as DOMPurify from 'dompurify';
+import { sanitizeRulesSet } from '../lib/ManifestHelpers';
 
 declare let global: {
     config: Config;
@@ -563,7 +565,7 @@ class Manifest {
                     return {
                         resource: {
                             format,
-                            id: source.id,
+                            id:  DOMPurify.sanitize(source.id, sanitizeRulesSet),
                             type: 'html',
                             manifestations: this.getManifestations(canvas)
                         },
@@ -844,6 +846,15 @@ class Manifest {
         }
 
         return undefined;
+    }
+
+    static getRootManifest() {
+        const rootId = this.getRootId();
+        if (rootId === undefined) {
+            return undefined;
+        }
+
+        return this.cache[rootId];
     }
 
     static getGetParameter(name: string, defaultValue?: string): string | undefined {

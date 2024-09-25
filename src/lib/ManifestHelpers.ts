@@ -74,5 +74,5 @@ export function basename(str: string): string {
 // See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
 export const sanitizeRulesSet = {
     ALLOWED_ATTR: ['href', 'src', 'alt'],
-    ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span'],
+    ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span', 'em'],
 };

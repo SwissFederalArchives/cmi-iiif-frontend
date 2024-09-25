@@ -63,7 +63,7 @@ const style = (viewportHeight: number | null) => ({
 });
 
 export default function ViewerModal(props: Omit<ModalUnstyledProps, 'open'>) {
-  const { currentManifest, lastItemActivationDate } = useContext(AppContext);
+  const { lastItemActivationDate } = useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const { children } = props;
@@ -72,11 +72,7 @@ export default function ViewerModal(props: Omit<ModalUnstyledProps, 'open'>) {
 
   useEffect(() => {
     setOpen(true);
-  }, []);
-
-  useEffect(() => {
-    setOpen(true);
-  }, [currentManifest, lastItemActivationDate]);
+  }, [lastItemActivationDate]);
 
   return children ? (
     <Modal

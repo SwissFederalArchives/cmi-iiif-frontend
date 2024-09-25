@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext  } from 'react';
 import Cache from '../lib/Cache';
 import TouchDetection from '../lib/TouchDetection';
 import IManifestData, { IManifestReference } from '../interface/IManifestData';
@@ -10,12 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import { FileIcon, FolderIcon, PdfIcon } from '../icons';
+import TreeBuilder from '../treeView/TreeBuilder';
+import AppContext from '../AppContext';
+import SearchUtility, { SEARCH_ENTITY_FILE } from '../search/util';
 
 interface IProps {
   item: IManifestReference;
   selected: IManifestData;
   authDate: number;
-  setCurrentManifest: (id?: string) => void;
+  setCurrentManifest: (id?: string) => Promise<IManifestData>;
   setViewerVisibility: (v: boolean) => void;
   setLastItemActivationDate?: (date: number) => void;
 }
@@ -37,14 +40,21 @@ const THUMB_WIDTH = 72;
 const TOOLTIP_MAGNIFICATION = 3.5;
 
 export default function Item(props: IProps) {
+  const { currentFolder, currentSearchFolder, searchResult } = useContext(AppContext);
   const itemType = props.item.type === 'Collection' ? 'folder' : 'file';
   const id = props.item.id;
   const isActive: boolean = id === props.selected.id;
   const { setViewerVisibility } = props;
+  const isInSearchRootline = currentFolder ? TreeBuilder.isInRootline(currentFolder?.id, currentSearchFolder?.id) : false;
+  const numSearchResults = SearchUtility.filterSearchResultsByManifestId(id, searchResult, SEARCH_ENTITY_FILE).length;
   let className = 'aiiif-item ' + itemType;
   const label = getLocalized(props.item.label);
   if (isActive) {
     className += ' active';
+  }
+
+  if (numSearchResults > 0 && isInSearchRootline) {
+    className += ' search';
   }
 
   function getThumbnail(props: IProps) {
@@ -112,19 +122,21 @@ export default function Item(props: IProps) {
 
   function open(props: IProps) {
     if (props.item.type === 'Collection') {
-      props.setCurrentManifest(props.item.id);
+      props.setCurrentManifest(props.item.id).then(() => {
+        props.setLastItemActivationDate && props.setLastItemActivationDate(Date.now());
+      });
     } else {
       openFile(props);
     }
   }
 
   function activateItem(props: IProps) {
-    props.setLastItemActivationDate && props.setLastItemActivationDate(Date.now());
-
     if (TouchDetection.isTouchDevice() && props.item.id === props.selected.id) {
       open(props);
     } else {
-      props.setCurrentManifest(props.item.id);
+      props.setCurrentManifest(props.item.id).then(() => {
+        props.setLastItemActivationDate && props.setLastItemActivationDate(Date.now());
+      });
     }
   }
 

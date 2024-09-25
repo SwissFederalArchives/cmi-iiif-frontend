@@ -4,10 +4,10 @@ import Content2 from './Content2';
 import { useContext } from 'react';
 import { AppContext } from '../AppContext';
 import { isSingleManifest, isSingleRoot } from '../lib/ManifestHelpers';
-import InfoBar from '../infoBar/InfoBar';
 import TreeView from '../treeView/TreeView';
 import Content3 from './Content3';
 import Config from '../lib/Config';
+import InfoPanel from '../infoPanel/InfoPanel';
 
 declare let global: {
   config: Config;
@@ -25,7 +25,7 @@ export default function Content1() {
       return (
         <>
           <div className="aiiif-infobar">
-            <Content3 key={currentManifest.id} />
+            <Content3 />
           </div>
         </>
       );
@@ -37,11 +37,11 @@ export default function Content1() {
         a={
           <div className="aiiif-navigation">
             <div className="aiiif-infobar">
-              <InfoBar />
+              <InfoPanel key={currentManifest.id} />
             </div>
           </div>
         }
-        b={<Content2 key={currentManifest.id} />}
+        b={<Content2 />}
         direction="vertical"
       />
     );

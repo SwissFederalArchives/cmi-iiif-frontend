@@ -10,15 +10,12 @@ import SearchApi from './fetch/SearchApi';
 import FolderView from './folder/FolderView';
 import Item from './folder/Item';
 import IIIFIcon from './icons/IIIFIcon';
-import Download from './infoBar/tabs/Download';
-import Metadata from './infoBar/tabs/Metadata';
-import Pages from './infoBar/tabs/Pages';
-import Search from './infoBar/tabs/Search';
-import Share from './infoBar/tabs/Share';
-import InfoBar from './infoBar/InfoBar';
-import TabButton from './infoBar/TabButton';
-import TabButtons from './infoBar/TabButtons';
-import Tabs from './infoBar/Tabs';
+import Download from './infoPanel/tabs/Download';
+import Metadata from './infoPanel/tabs/Metadata';
+import Pages from './infoPanel/tabs/Pages';
+import Share from './infoPanel/tabs/Share';
+import TabButtons from './infoPanel/TabButtons';
+import Tabs from './infoPanel/Tabs';
 import * as IConfigParameter from './interface/IConfigParameter';
 import * as IManifestData from './interface/IManifestData';
 import * as IManifestDataThumbnail from './interface/IManifestDataThumbnail';
@@ -47,7 +44,6 @@ import TreeBuilder from './treeView/TreeBuilder';
 import TreeView from './treeView/TreeView';
 import TreeViewItem from './treeView/TreeViewItem';
 import ImageButtons from './viewer/image/ImageButtons';
-import ReactOpenSeadragon from './viewer/image/ReactOpenSeadragon';
 import PdfViewer from './viewer/pdf/PdfViewer';
 import Nl2br from './viewer/plainText/Nl2br';
 import PlainTextViewer from './viewer/plainText/PlainTextViewer';
@@ -58,6 +54,8 @@ import Alert from './Alert';
 import App from './App';
 import AppContext from './AppContext';
 import Login from './Login';
+import TabButton from 'infoPanel/TabButton';
+import InfoPanel from 'infoPanel/InfoPanel';
 
 export default Init;
 
@@ -74,9 +72,8 @@ export {
     Download,
     Metadata,
     Pages,
-    Search,
     Share,
-    InfoBar,
+    InfoPanel,
     TabButton,
     TabButtons,
     Tabs,
@@ -108,7 +105,6 @@ export {
     TreeView,
     TreeViewItem,
     ImageButtons,
-    ReactOpenSeadragon,
     PdfViewer,
     Nl2br,
     PlainTextViewer,

@@ -16,7 +16,7 @@ declare let global: {
 export default function ReactMirador() {
   const id = useRef<number>(Math.floor(Math.random() * 10000)).current.toString(10);
   const [viewerInstance, setViewerInstance] = useState<any>(null);
-  const { currentManifest, isMobile } = useContext(AppContext);
+  const { currentManifest, isMobile, withBookView, q } = useContext(AppContext);
   const availableLanguages = global.config.getTranslations();
 
   /**
@@ -52,6 +52,18 @@ export default function ReactMirador() {
             search: true,
             layers: false,
           },
+          views: withBookView ? [{
+            key: 'single'
+          }, {
+            key:  'book'
+          }, {
+            key: 'gallery'
+          }] :
+      [{
+        key: 'single'
+      }, {
+        key: 'gallery'
+      }]
         },
         windows: [],
         thumbnailNavigation: {
@@ -115,10 +127,14 @@ export default function ReactMirador() {
     if (currentManifest && viewerInstance) {
       const windows = Object.values(viewerInstance.store.getState().windows);
       const firstWindow: any = windows.length > 0 ? windows[0] : null;
+      const windowConfig = {
+        manifestId: currentManifest.id,
+        defaultSearchQuery: q ?? undefined,
+      };
       if (!firstWindow) {
-        viewerInstance.store.dispatch(actions.addWindow({ manifestId: currentManifest.id }));
+        viewerInstance.store.dispatch(actions.addWindow(windowConfig));
       } else {
-        viewerInstance.store.dispatch(actions.updateWindow(firstWindow.id, { manifestId: currentManifest.id }));
+        viewerInstance.store.dispatch(actions.updateWindow(firstWindow.id, windowConfig));
       }
     }
   }, [viewerInstance, currentManifest]); // eslint-disable-line react-hooks/exhaustive-deps

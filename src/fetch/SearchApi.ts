@@ -1,82 +1,157 @@
-import IManifestData from "../interface/IManifestData";
+import Config from '../lib/Config';
+import SearchUtility from '../search/util';
+import { PropertyValue } from 'manifesto.js';
 
-export type HitType = {
-    match: string;
-    before: string;
-    after: string;
-    i: number;
-    resource: AnnotationType;
+declare let global: {
+  config: Config;
+};
+
+export interface ISearchApiFetchPayload {
+  searchUrl: string;
+  q: string;
+  rows?: number;
+  start?: number;
 }
 
-export type AnnotationType = {
+export interface ISearchApiLoadMorePayload {
+  loadMoreUrl: string;
+  rows?: number;
+  start?: number;
+}
+
+export interface ISearchApiFetchResponse {
+  '@context': string;
+  id: string;
+  type: string;
+  ignored: string[];
+  partOf: {
     id: string;
-    on: string;
-    x: number;
-    y: number;
-    page: number,
-    width: number;
-    height: number;
+    type: string;
+    total: number;
+    first: {
+      id: string;
+      type: string;
+    };
+    last: {
+      id: string;
+      type: string;
+    };
+  };
+  prev?: {
+    id: string;
+    type: string;
+  };
+  next?: {
+    id: string;
+    type: string;
+  };
+  items: {
+    id: string;
+    type: string;
+    motivation: string;
+    body: {
+      type: string;
+      value: string;
+      format: string;
+    };
+    target: {
+      id: string;
+      partOf: {
+        id: string;
+        type: string;
+        label: PropertyValue;
+      };
+    };
+  }[];
+}
+export interface IUseSearchApiProps {
+  searchResult: ISearchApiFetchResponse | undefined;
+  setSearchResult: (result: ISearchApiFetchResponse | undefined) => void;
+  setSearchLoading: (loading: boolean) => void;
+  setSearchLoadingMore: (loading: boolean) => void;
+  setSearchError: (error: Error | undefined) => void;
 }
 
-export default function  fetchSearchApi(searchUrl: string, manifest: IManifestData):  Promise<HitType[]> {
-    return new Promise((resolve, reject) => {
-        fetch(searchUrl).then((response) => {
+export const useSearchApi = (props: IUseSearchApiProps) => {
+  const { searchResult, setSearchResult, setSearchLoading, setSearchError, setSearchLoadingMore } = props;
 
-            const statusCode = response.status;
-            if (statusCode !== 401 && statusCode >= 400) {
-                reject( {
-                    title: 'Error',
-                    body: 'Could not fetch search url!\n\n'  + searchUrl
-                })
-                return;
-            }
+  const performSearch = (payload: ISearchApiFetchPayload) => {
+    const rows = global.config.getSearchApiRows();
+    const { searchUrl, ...params } = payload;
+    if (!searchUrl) {
+      throw new Error('No searchUrl given');
+    }
+    if (rows > 0) {
+      params.rows = rows;
+    }
+    const paramsString = new URLSearchParams(params as any).toString();
+    const url = `${searchUrl}?${paramsString}`;
 
-            response.json().then((json) => {
+    SearchUtility.clearCache();
+    setSearchResult(undefined);
+    setSearchLoading(true);
+    fetch(url)
+      .then((response) => {
+        if (response.status !== 401 && response.status >= 400) {
+          return Promise.reject(new Error('Could not perform search! URL: ' + url));
+        }
+        return response.json();
+      })
+      .then((data: ISearchApiFetchResponse) => {
+        setSearchResult(data);
+        setSearchError(undefined);
+        setSearchLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setSearchError(new Error('Failed to load data from API. URL: ' + url));
+        setSearchLoading(false);
+      });
+  };
 
-                const hits: HitType[] = [];
-                let resources = json.resources;
-                let i = 0;
-                for (const hit of json.hits) {
-                    for (const annotation of hit.annotations) {
+  const loadMore = (payload: ISearchApiLoadMorePayload) => {
+    const rows = global.config.getSearchApiRows();
+    const { loadMoreUrl, ...params } = payload;
+    if (!loadMoreUrl) {
+      throw new Error('No loadMoreUrl given');
+    }
+    if (rows > 0) {
+      params.rows = rows;
+    }
 
-                        const resource = resources.find((r: any) => r['@id'] === annotation);
-                        if (!resource) {
-                            continue;
-                        }
-                        let tmpArray = resource.on.split('#xywh=');
-                        if (tmpArray.length !== 2) {
-                            console.log('Error: url must include #xywh=! ' + resource.on)
-                            continue;
-                        }
-                        let position = tmpArray[1].split(',');
+    const paramsString = new URLSearchParams(params as any).toString();
+    const url = `${loadMoreUrl}&${paramsString}`;
 
-                        const page = manifest.images.findIndex(r => r.on === tmpArray[0]);
-                        hits.push({
-                            match: resources[i].resource.chars,
-                            before: hit.before,
-                            after: hit.after,
-                            i: i++,
-                            resource: {
-                                id: resource['@id'],
-                                on: tmpArray[0],
-                                page,
-                                x: parseInt(position[0]),
-                                y: parseInt(position[1]),
-                                width: parseInt(position[2]),
-                                height: parseInt(position[3]),
-                            }
-                        });
-                    }
-                }
+    setSearchLoadingMore(true);
 
-                resolve(hits);
-            });
-        }).catch((err) => {
-            console.log(err);
-            reject( {
-                title: 'Error',
-                body: 'Could not read search url!\n\n'  + searchUrl
-            })
-        });
-    });
-}
+    fetch(url)
+      .then((response) => {
+        if (response.status !== 401 && response.status >= 400) {
+          return Promise.reject(new Error('Could not perform search! URL: ' + loadMoreUrl));
+        }
+        return response.json();
+      })
+      .then((data: ISearchApiFetchResponse) => {
+        if (data && searchResult) {
+          data.items = [...searchResult.items, ...data.items];
+        }
+        setSearchResult(data);
+        setSearchLoadingMore(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const resetSearch = () => {
+    setSearchResult(undefined);
+    setSearchLoading(false);
+    setSearchError(undefined);
+
+    return undefined;
+  };
+
+  return { performSearch, loadMore, resetSearch };
+};
+
+export default useSearchApi;

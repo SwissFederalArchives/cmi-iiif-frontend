@@ -1,10 +1,22 @@
-<h1 align="center"><a href="https://material-ui.com/" rel="noopener" target="_blank"><img valign="middle" width="32" src="src/images/swiss.svg" alt="Material-UI logo"></a> <span>WebOZ IIIF Viewer</span></h1>
+# cmi-iiif-frontend
 
-# Description
+- [cmi-viaduc](https://github.com/SwissFederalArchives/cmi-viaduc)
+  - [cmi-viaduc-web-core](https://github.com/SwissFederalArchives/cmi-viaduc-web-core)
+  - [cmi-viaduc-web-frontend](https://github.com/SwissFederalArchives/cmi-viaduc-web-frontend)
+  - [cmi-viaduc-web-management](https://github.com/SwissFederalArchives/cmi-viaduc-web-management)
+  - [cmi-viaduc-backend](https://github.com/SwissFederalArchives/cmi-viaduc-backend)
+  - **[cmi-iiif-frontend](https://github.com/SwissFederalArchives/cmi-iiif-frontend)** :triangular_flag_on_post:
+  - [cmi-iiif-backend](https://github.com/SwissFederalArchives/cmi-iiif-backend)
 
-This software is an open-source and web-based viewer for [IIIF](https://iiif.io/). It is focused on tree views but also works with single manifests. 
+# Context
 
-It's based on the open-source project [Archival IIIF Viewer](https://github.com/archival-IIIF/viewer).
+The [Viaduc](https://github.com/SwissFederalArchives/cmi-viaduc) project includes 6 code repositories. This current repository `cmi-iiif-frontend` is the IIIF viewer that allows the user to view digital content online in the browser. It is focused on tree views but also works with single manifests. It's based on the open-source project [Archival IIIF Viewer](https://github.com/archival-IIIF/viewer).
+ The viewer uses services that are provided by the _backend_ ([cmi-iiif-backend](https://github.com/SwissFederalArchives/cmi-iiif-backend)).
+The other repositories include the applications _public access_ ([cmi-viaduc-web-frontend](https://github.com/SwissFederalArchives/cmi-viaduc-web-frontend)) and the _internal management_ ([cmi-viaduc-web-management](https://github.com/SwissFederalArchives/cmi-viaduc-web-management));  both are Angular applications that access basic services of another Angular library called [cmi-viaduc-web-core](https://github.com/SwissFederalArchives/cmi-viaduc-web-core). The Angular applications are hosted in an `ASP.NET` container (see backend repository [cmi-viaduc-backend](https://github.com/SwissFederalArchives/cmi-viaduc-backend)) and communicate with the system via web API.
+
+![The Big-Picture](docs/imgs/context.svg)
+
+> Note: A general description of the repositories can be found in the repository [cmi-viaduc](https://github.com/SwissFederalArchives/cmi-viaduc).
 
 # Development
 
@@ -62,3 +74,25 @@ To decouple the environment variables from the code, a logic was introduced that
 ## Variables should be able to be written by the server at runtime
 
 The `config.json` should contain placeholders instead of actual values if required. These placeholders are then replaced with the actual values on the target environment.
+
+# Authors
+
+- [4eyes GmbH](https://www.4eyes.ch/)
+- [CM Informatik AG](https://cmiag.ch)
+- [Evelix GmbH](https://evelix.ch)
+
+# License
+
+GNU Affero General Public License (AGPLv3), see [LICENSE](LICENSE.TXT)
+
+# Contribute
+
+This repository is a copy which is updated regularly - therefore contributions via pull requests are not possible. However, independent copies (forks) are possible under consideration of the AGPLV3 license.
+
+# Contact
+
+- For general questions (and technical support), please contact the Swiss Federal Archives by e-mail at bundesarchiv@bar.admin.ch.
+- Technical questions or problems concerning the source code can be posted here on GitHub via the "Issues" interface.
+
+
+

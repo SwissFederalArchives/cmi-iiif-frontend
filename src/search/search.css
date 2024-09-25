@@ -1,0 +1,152 @@
+.aiiif-search {
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  flex: 0 1 auto;
+  margin: -12px -9px;
+}
+
+.aiiif-search-form {
+  margin-bottom: 0.5rem;
+  padding: 12px 9px 0;
+}
+
+.aiiif-search-form .search-submit {
+  top: -1px;
+}
+
+.aiiif-search-form-info {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.3rem;
+}
+
+.aiiif-search-form-info button {
+  padding: 0;
+  text-decoration: underline;
+}
+
+
+.aiiif-search-form .search-input.is-invalid {
+  background-color: #f8d7da;
+}
+
+.aiiif-search-form .search-input {
+  padding: 0 30px 0 8px;
+  position: relative;
+  height: 25px;
+  width: 200px;
+  transition: width 0.4s;
+}
+
+.aiiif-search-form .search-submit {
+  top: 0;
+  left: auto;
+  right: 0;
+  padding: 0 7px 1px 4px;
+  height: 25px;
+  border-radius: 3px;
+  line-height: 1.2;
+  background-color: #dc0018;
+  color: white;
+  border: 1px solid #757575;
+  font-weight: 100;
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  white-space: nowrap;
+  font-size: 12px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.aiiif-search-form .search-submit:hover{
+  background-color: #f7001d;
+}
+
+.aiiif-search-form .search-context {
+  display: flex;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  align-items: center;
+}
+
+.aiiif-search-form .search-context select {
+  flex: 1 1 auto;
+  height: 25px;
+  padding: 0 0 0 0.25rem;
+  width: 100%;
+}
+
+.aiiif-search-form .search-context label {
+  margin: 0;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.aiiif-searchresults {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex: 0 1 auto;
+  padding: 0 9px 12px;
+}
+
+.aiiif-searchresults em {
+  font-style: normal;
+  background-color: yellow;
+}
+
+.aiiif-searchresults h2 {
+  font-size: 1rem;
+}
+
+.aiiif-searchresults p {
+  font-size: 1rem;
+}
+
+.aiiif-searchresults p:last-of-type {
+  margin-bottom: 0;
+}
+
+.aiiif-searchresults-item {
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
+}
+
+.aiiif-searchresults-item:last-of-type {
+  border-bottom: none;
+}
+
+.aiiif-main > .aiiif-a {
+  position: relative;
+}
+
+.aiiif-navigation {
+  background-color: #EDECED;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.aiiif-navigation-bar {
+  position: sticky;
+  top: 0;
+  background-color: gray;
+  opacity: 0.7;
+}
+
+.aiiif-navigation-bar > svg {
+  margin: 4px;
+  cursor: pointer;
+}
