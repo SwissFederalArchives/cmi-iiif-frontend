@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 import { getLocalized, sanitizeRulesSet } from '../../lib/ManifestHelpers';
 import AppContext from '../../AppContext';
 
@@ -14,6 +14,7 @@ const SearchResults = () => {
     setSearchLoadingMoreUrl,
     setCurrentManifest,
     setLastItemActivationDate,
+    setViewerVisibility,
     q,
   } = useContext(AppContext);
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ const SearchResults = () => {
 
   const onClick = useCallback(
     (manifestId: string) => {
+      setViewerVisibility(true);
       setCurrentManifest(manifestId).then(() => {
         setLastItemActivationDate(Date.now());
       });

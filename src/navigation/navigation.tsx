@@ -44,7 +44,7 @@ class Navigation extends React.Component<any> {
                                                     <React.Fragment key={item.name}>
                                                         {(item.to) && (
                                                             <li className={this.getNavLinkClass(item.to)}>
-                                                                <NavLink exact activeClassName={'is-active'} to={item.to}>
+                                                                <NavLink end className={({isActive}) => isActive ? 'is-active' : ''} to={item.to}>
                                                                     {t(`navItem${item.name}`)}
                                                                 </NavLink>
                                                             </li>
@@ -66,7 +66,7 @@ class Navigation extends React.Component<any> {
                                 <React.Fragment key={item.name}>
                                     {(item.to) && (
                                         <li className={`dropdown yamm-fw ${this.getNavLinkClass(item.to)}`}>
-                                            <NavLink exact activeClassName={'is-active'} to={item.to}>
+                                            <NavLink end className={({isActive}) => isActive ? 'is-active' : ''} to={item.to}>
                                                 {t(`navItem${item.name}`)}
                                             </NavLink>
                                         </li>

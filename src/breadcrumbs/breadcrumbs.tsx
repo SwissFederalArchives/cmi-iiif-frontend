@@ -5,7 +5,7 @@ import { getRootline } from './breadcrumbs.data';
 
 import './breadcrumbs.css';
 import { sanitizeRulesSet } from '../lib/ManifestHelpers';
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 const Breadcrumbs = () => {
   const rootline = getRootline(i18next.language);

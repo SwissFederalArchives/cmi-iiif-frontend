@@ -95,6 +95,7 @@ export default function TreeViewItem(props: IPros) {
     fontSize: 14,
   };
 
+  const isRoot = TreeBuilder.isRoot(props.id);
   const isInSearchRootline = TreeBuilder.isInRootline(props.id, currentSearchFolder?.id);
   const childCollections = TreeBuilder.getCollectionsByParentId(props.id);
   const numSearchResults = SearchUtility.filterSearchResultsByManifestId(
@@ -102,6 +103,7 @@ export default function TreeViewItem(props: IPros) {
     searchResult,
     SEARCH_ENTITY_DIRECTORY
   ).length;
+
   const numChildCollectionsSearchResults = childCollections.reduce((acc, child) => {
     return acc + SearchUtility.filterSearchResultsByManifestId(child, searchResult, SEARCH_ENTITY_DIRECTORY).length;
   }, 0);
@@ -120,7 +122,12 @@ export default function TreeViewItem(props: IPros) {
   if (currentFolder && props.id === currentFolder.id) {
     className += ' aiiif-current';
   }
-  if ((numSearchResults > 0 || numChildCollectionsSearchResults > 0)&& isInSearchRootline) {
+  if (
+    (numSearchResults > 0 ||
+      numChildCollectionsSearchResults > 0 ||
+      (isRoot && Number(searchResult?.items?.length) > 0)) &&
+    isInSearchRootline
+  ) {
     className += ' aiiif-has-search-results';
   }
   const label = getLocalized(props.label);

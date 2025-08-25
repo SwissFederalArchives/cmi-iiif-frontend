@@ -7,7 +7,7 @@ import {faFacebookF, faTwitter} from "@fortawesome/free-brands-svg-icons";
 
 import "./share.css";
 import {AppContext} from "../../AppContext";
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 
 

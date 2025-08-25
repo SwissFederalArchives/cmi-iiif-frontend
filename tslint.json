@@ -1,10 +1,10 @@
 {
     "extends": "tslint:latest",
     "rules": {
-        "no-console": false, // allow some console statements for debugging
-        "member-access": false, // start without having to write public, private modifiers
-        "jsx-no-lambda": false, // lambdas in render are bad for performance but this can be annoying during prototyping
-        "jsx-boolean-value": false, // allow someProp instead of someProp={true}
+        "no-console": false,
+        "member-access": false,
+        "jsx-no-lambda": false,
+        "jsx-boolean-value": false,
         "no-require-imports": false,
         "no-var-requires": false,
         "ordered-imports": false,

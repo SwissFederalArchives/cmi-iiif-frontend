@@ -25,14 +25,20 @@ export default class SearchUtility {
     if (this.cache[manifestId]) {
       return this.cache[manifestId];
     }
+
     const relevantManifestId = manifestId.split('/').slice(0, -1).join('/');
     const relevantSearchResult = searchResult.items.filter((item) => {
-      const relevantKey = item.target.partOf.id.split('/').slice(0, searchEntity).join('/');
-      return relevantManifestId.endsWith(relevantKey);
+      if (searchEntity === SEARCH_ENTITY_DIRECTORY) {
+        return item.target.partOf.id.startsWith(relevantManifestId);
+      }
+      if (searchEntity === SEARCH_ENTITY_FILE) {
+        return item.target.partOf.id.startsWith(relevantManifestId) && item.target.partOf.id !== relevantManifestId;
+      }
     });
     if (relevantSearchResult.length > 0) {
       this.cache[manifestId] = relevantSearchResult.map((item) => item.target.partOf.id);
     }
+    
     return relevantSearchResult;
   }
 
@@ -43,8 +49,8 @@ export default class SearchUtility {
 
   static getSearchUrl(manifest: IManifestData) {
     const envConfig = EnvironmentConfig.get();
-    if (manifest?.search?.id) {
-      return manifest.search.id;
+    if (manifest.services?.[0]?.id) {
+      return manifest.services?.[0]?.id;
     }
     // Fallback if no search service id is provided in the manifest
     const collectionId = manifest.id.split('/manifests/')[1].split('/').slice(0, -1).join('-');

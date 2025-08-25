@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect, useRef } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import ManifestHistory from './lib/ManifestHistory';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';

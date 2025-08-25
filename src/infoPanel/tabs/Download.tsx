@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { getLocalized, sanitizeRulesSet } from '../../lib/ManifestHelpers';
 import './download.css';
 import { AppContext } from '../../AppContext';
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 export default function Download() {
   const { currentManifest } = useContext(AppContext);

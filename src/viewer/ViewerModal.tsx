@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import { use100vh } from 'react-div-100vh';
 import clsx from 'clsx';
 import { styled, Box } from '@mui/system';
-import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
+import { Modal, ModalProps } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { AppContext } from '../AppContext';
 
@@ -29,7 +29,7 @@ const CloseButton = styled('button')({
   },
 });
 
-const Modal = styled(ModalUnstyled)`
+const StyledModal = styled(Modal)`
   position: fixed;
   z-index: 1300;
   right: 0;
@@ -62,7 +62,7 @@ const style = (viewportHeight: number | null) => ({
   bgcolor: 'black',
 });
 
-export default function ViewerModal(props: Omit<ModalUnstyledProps, 'open'>) {
+export default function ViewerModal(props: Omit<ModalProps, 'open'>) {
   const { lastItemActivationDate } = useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
@@ -75,7 +75,7 @@ export default function ViewerModal(props: Omit<ModalUnstyledProps, 'open'>) {
   }, [lastItemActivationDate]);
 
   return children ? (
-    <Modal
+    <StyledModal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
       open={open}
@@ -85,12 +85,14 @@ export default function ViewerModal(props: Omit<ModalUnstyledProps, 'open'>) {
       <Box sx={style(viewportHeight)}>
         <>
           <CloseButton onClick={handleClose}>
-            <span><>{i18next.t('common:close')}</></span>
+            <span>
+              <>{i18next.t('common:close')}</>
+            </span>
             <CancelIcon />
           </CloseButton>
           {children}
         </>
       </Box>
-    </Modal>
+    </StyledModal>
   ) : null;
 }

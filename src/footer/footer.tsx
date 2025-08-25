@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Translation } from "react-i18next";
 import logo from '../images/logo.svg';
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 import { sanitizeRulesSet } from '../lib/ManifestHelpers';
 
 require('./footer.css');

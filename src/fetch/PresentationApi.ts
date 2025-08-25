@@ -14,7 +14,7 @@ import Token from "../lib/Token";
 import {IIIFResource, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
 import i18n from "i18next";
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 import { sanitizeRulesSet } from '../lib/ManifestHelpers';
 
 declare let global: {

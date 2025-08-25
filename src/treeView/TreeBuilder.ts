@@ -1,4 +1,3 @@
-import { Tree } from '@blueprintjs/icons/lib/esm/generated/16px/paths';
 import PresentationApi from '../fetch/PresentationApi';
 import IManifestData from '../interface/IManifestData';
 import Config from '../lib/Config';
@@ -53,6 +52,16 @@ export default class TreeBuilder {
     } catch (error) {
       console.error('Failed to build cache: ', error);
     }
+  }
+
+  static isRoot(manifestId: string): boolean {
+    if (!manifestId) {
+      return false;
+    }
+    if (TreeBuilder.cache[manifestId] === undefined) {
+      return false;
+    }
+    return TreeBuilder.cache[manifestId].parent === undefined;
   }
 
   static isInRootline(manifestId = '', rootlineId = ''): boolean {

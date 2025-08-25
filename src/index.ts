@@ -43,7 +43,6 @@ import TopBar from './topBar/TopBar';
 import TreeBuilder from './treeView/TreeBuilder';
 import TreeView from './treeView/TreeView';
 import TreeViewItem from './treeView/TreeViewItem';
-import ImageButtons from './viewer/image/ImageButtons';
 import PdfViewer from './viewer/pdf/PdfViewer';
 import Nl2br from './viewer/plainText/Nl2br';
 import PlainTextViewer from './viewer/plainText/PlainTextViewer';
@@ -104,7 +103,6 @@ export {
     TreeBuilder,
     TreeView,
     TreeViewItem,
-    ImageButtons,
     PdfViewer,
     Nl2br,
     PlainTextViewer,
@@ -116,5 +114,4 @@ export {
     AppContext,
     Init,
     Login
-
 }
