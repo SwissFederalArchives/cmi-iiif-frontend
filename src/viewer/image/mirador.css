@@ -3,8 +3,6 @@
     font-family: "Frutiger Neue", sans-serif;
 }
 
-.aiiif-mirador .jss385,
-.aiiif-mirador .jss435,
 .aiiif-mirador .MuiTypography-overline,
 .aiiif-mirador .MuiTypography-h4,
 .aiiif-mirador .MuiTypography-subtitle2,
@@ -30,4 +28,8 @@
 
 .aiiif-mirador header {
     padding: 0;
+}
+
+.aiiif-mirador .MuiBadge-badge.MuiBadge-dot {
+    background-color: #ffa224;
 }

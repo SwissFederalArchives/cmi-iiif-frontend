@@ -1,0 +1,90 @@
+diff --git a/node_modules/mirador/dist/mirador.es.js b/node_modules/mirador/dist/mirador.es.js
+index cbbfb65..856a3e5 100644
+--- a/node_modules/mirador/dist/mirador.es.js
++++ b/node_modules/mirador/dist/mirador.es.js
+@@ -8441,6 +8441,7 @@ const xA = ee(
+     const r = t.map((i) => i.id);
+     return [].concat(e).sort((i, o) => {
+       const a = n.resources.find((l) => l.id === i.annotations[0]), s = n.resources.find((l) => l.id === o.annotations[0]);
++      if (!a || !s) return 0; // patch: https://github.com/ProjectMirador/mirador/issues/4229
+       return r.indexOf(a.targetId) - r.indexOf(s.targetId);
+     });
+   }
+@@ -8461,7 +8462,8 @@ const xA = ee(
+ function LA(e, t) {
+   if (!e || !e.resources || e.length === 0 || !t || t.length === 0) return tn;
+   const n = t.map((r) => r.id);
+-  return [].concat(e.resources).sort((r, i) => n.indexOf(r.targetId) - n.indexOf(i.targetId));
++  // patch: https://github.com/ProjectMirador/mirador/issues/4229
++  return [].concat(e.resources).filter(Boolean).sort((r, i) => !r || !i ? 0 : n.indexOf(r.targetId) - n.indexOf(i.targetId));
+ }
+ const tw = ee(
+   [el, Kn],
+@@ -18022,9 +18024,12 @@ function XN({
+   windowId: a
+ }) {
+   const { t: s } = Se(), [l, c] = Ze(r), [u, d] = Ze(r), [h, f] = Ze([]);
++  const _userSearch = ke(!1); // patch: https://github.com/ProjectMirador/mirador/issues/4231
+   je(() => {
+     c(r), d(r), f([]);
+   }, [r]), je(() => {
++    if (!_userSearch.current) return;
++    _userSearch.current = false;
+     u && u !== "" && o && n(a, t, `${o.id}?${new URLSearchParams({ q: u })}`, u);
+   }, [u, o, t, n, a]);
+   const p = (S, E, C) => {
+@@ -18037,9 +18042,9 @@ function XN({
+   ), v = (S) => {
+     f(S.terms);
+   }, b = (S) => {
+-    l && (S && S.preventDefault(), d(l));
++    l && (S && S.preventDefault(), _userSearch.current = true, d(l));
+   }, w = (S, E, C) => {
+-    E && Pa(E) && d(Pa(E));
++    E && Pa(E) && (_userSearch.current = true, d(Pa(E)));
+   }, T = `search-${t}`;
+   return /* @__PURE__ */ B(st, { children: [
+     /* @__PURE__ */ y(q4, { "aria-label": s("searchTitle"), onSubmit: b, children: /* @__PURE__ */ y(
+@@ -51852,16 +51857,20 @@ class ihe {
+     this.viewer = t, this.ref = n, this.containerWidth = 0, this.containerHeight = 0, this.imgAspectRatio = 1;
+   }
+   /** */
++  // patch: https://github.com/ProjectMirador/mirador/issues/4230
+   get canvas() {
+-    return this.canvasDiv.firstElementChild;
++    const div = this.canvasDiv;
++    return div ? div.firstElementChild : null;
+   }
+   /** */
+   get canvasDiv() {
+     return this.ref.current;
+   }
+   /** */
++  // patch: https://github.com/ProjectMirador/mirador/issues/4230
+   get context2d() {
+-    return this.canvas.getContext("2d");
++    const c = this.canvas;
++    return c ? c.getContext("2d") : null;
+   }
+   /** */
+   clear() {
+@@ -51871,6 +51880,7 @@ class ihe {
+    * resize - resizes the added Canvas overlay.
+    */
+   resize() {
++    if (!this.canvasDiv || !this.canvas) return; // patch: https://github.com/ProjectMirador/mirador/issues/4230
+     this.containerWidth !== this.viewer.container.clientWidth && (this.containerWidth = this.viewer.container.clientWidth, this.canvasDiv.setAttribute("width", this.containerWidth), this.canvas.setAttribute("width", this.containerWidth)), this.containerHeight !== this.viewer.container.clientHeight && (this.containerHeight = this.viewer.container.clientHeight, this.canvasDiv.setAttribute("height", this.containerHeight), this.canvas.setAttribute("height", this.containerHeight)), this.viewportOrigin = new nr.Point(0, 0);
+     const t = this.viewer.viewport.getBoundsNoRotateWithMargins(!0);
+     this.viewportOrigin.x = t.x, this.viewportOrigin.y = t.y * this.imgAspectRatio, this.viewportWidth = t.width, this.viewportHeight = t.height * this.imgAspectRatio;
+diff --git a/node_modules/mirador/src/state/selectors/searches.js b/node_modules/mirador/src/state/selectors/searches.js
+index a79b4ab..987ae3b 100644
+--- a/node_modules/mirador/src/state/selectors/searches.js
++++ b/node_modules/mirador/src/state/selectors/searches.js
+@@ -125,6 +125,7 @@ export const getSortedSearchHitsForCompanionWindow = createSelector(
+     return [].concat(searchHits).sort((a, b) => {
+       const hitA = annotation.resources.find((r) => r.id === a.annotations[0]);
+       const hitB = annotation.resources.find((r) => r.id === b.annotations[0]);
++      if (!hitA || !hitB) return 0; // patch: https://github.com/ProjectMirador/mirador/issues/4229
+       return canvasIds.indexOf(hitA.targetId) - canvasIds.indexOf(hitB.targetId);
+     });
+   },

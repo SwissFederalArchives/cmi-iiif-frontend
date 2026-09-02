@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import i18next from 'i18next';
-import { use100vh } from 'react-div-100vh';
 import clsx from 'clsx';
 import { styled, Box } from '@mui/system';
 import { Modal, ModalProps } from '@mui/material';
@@ -55,20 +54,18 @@ const Backdrop = styled(BackdropUnstyled)`
   backdrop-filter: blur(3px);
 `;
 
-const style = (viewportHeight: number | null) => ({
+const style = {
   position: 'relative',
   width: 'calc(100vw - 50px)',
-  height: `calc(${viewportHeight + 'px' || '100vh'} - 75px)`,
+  height: 'calc(100dvh - 75px)',
   bgcolor: 'black',
-});
+};
 
 export default function ViewerModal(props: Omit<ModalProps, 'open'>) {
   const { lastItemActivationDate } = useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const { children } = props;
-
-  const viewportHeight = use100vh();
 
   useEffect(() => {
     setOpen(true);
@@ -82,7 +79,7 @@ export default function ViewerModal(props: Omit<ModalProps, 'open'>) {
       onClose={handleClose}
       slots={{ backdrop: Backdrop }}
     >
-      <Box sx={style(viewportHeight)}>
+      <Box sx={style}>
         <>
           <CloseButton onClick={handleClose}>
             <span>

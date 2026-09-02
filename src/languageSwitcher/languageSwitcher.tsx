@@ -39,7 +39,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
                                     onClick={(ev) => {ev.preventDefault(); this.changeLanguage(langKey.toLowerCase())}}
                                     title={langKey}
                                     aria-label={langKey}
-                                >{supportedLanguages[langKey].toUpperCase()}</a>
+                                >{supportedLanguages[Number(langKey)].toUpperCase()}</a>
                             </li>
                         );
                     })}
@@ -59,7 +59,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
     changeLanguage(code: string) {
         this.close();
         const supportedLanguages = global.config.getSupportedLanguages();
-        i18n.changeLanguage( supportedLanguages[code].toLowerCase());
+        i18n.changeLanguage( supportedLanguages[Number(code)].toLowerCase());
     }
 }
 

@@ -301,6 +301,6 @@ const rootline = {
     }
 }
 
-export const getRootline = (language: string) => rootline[language]
+export const getRootline = (language: string) => rootline[language as keyof typeof rootline]
 
 export default rootline;

@@ -11,7 +11,7 @@ import {isSingleManifest} from "../lib/ManifestHelpers";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 
 export default function TopBar() {
 
@@ -28,7 +28,7 @@ export default function TopBar() {
         <ExternalSearch />
         {Token.hasActiveToken() &&
             <div className="aiiif-icon-button" onClick={() => Token.logout()}>
-                <FontAwesomeIcon icon={faSignOutAlt} />
+                <FontAwesomeIcon icon={faRightFromBracket} />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>
         }

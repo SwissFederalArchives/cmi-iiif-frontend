@@ -2,8 +2,7 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import i18next from 'i18next';
 import './mirador.css';
 
-import Mirador from 'mirador';
-import * as actions from 'mirador/dist/es/src/state/actions/index.js';
+import Mirador, { addWindow, updateWindow, updateConfig, setWindowThumbnailPosition } from 'mirador';
 
 import { AppContext } from '../../AppContext';
 import Config from '../../lib/Config';
@@ -15,22 +14,21 @@ declare let global: {
 
 export default function ReactMirador() {
   const id = useRef<number>(Math.floor(Math.random() * 10000)).current.toString(10);
+  const viewerRef = useRef<any>(null);
   const [viewerInstance, setViewerInstance] = useState<any>(null);
   const { currentManifest, isMobile, withBookView, q } = useContext(AppContext);
   const availableLanguages = global.config.getTranslations();
 
   /**
-   * This method is executed once, when the component is mounted
+   * This method is executed once, when the component is mounted.
+   * The viewer is stored in a ref so it survives React StrictMode's cleanup/re-mount cycle
+   * without creating a duplicate instance.
    */
   useEffect(() => {
-    if (isMobile !== undefined) {
+    if (!viewerRef.current && isMobile !== undefined) {
       // Initializing Mirador
       let config = {
         id: `mirador-${id}`,
-        createGenerateClassNameOptions: {
-          // Options passed directly to createGenerateClassName in Material-UI https://material-ui.com/styles/api/#creategenerateclassname-options-class-name-generator
-          productionPrefix: `mirador-${id}`,
-        },
         workspace: {
           allowNewWindows: false,
           isWorkspaceAddVisible: false,
@@ -73,27 +71,30 @@ export default function ReactMirador() {
         language: i18next.language,
         availableLanguages: false, // Workaround: Needs to be 'false' on init, otherwise restrictions won't be applied...
         theme: {
-          overrides: {
+          components: {
               MuiListItem: {
-                  root: {
-                      margin: 0,
+                  styleOverrides: {
+                      root: {
+                          margin: 0,
+                      }
                   }
               }
           }
       }
       };
 
-      setViewerInstance(Mirador.viewer(config));
-
-      // Register several event listeners
-      i18next.on('languageChanged', changeLanguage);
+      viewerRef.current = Mirador.viewer(config);
     }
+
+    setViewerInstance(viewerRef.current);
+
+    // Register several event listeners
+    i18next.on('languageChanged', changeLanguage);
 
     /**
      * This method is executed when the component is unmounted (=destructor)
      */
     return () => {
-      setViewerInstance(null);
       i18next.off('languageChanged', changeLanguage);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +111,7 @@ export default function ReactMirador() {
 
       if (!state.config.availableLanguages) {
         viewerInstance.store.dispatch(
-          actions.updateConfig({
+          updateConfig({
             availableLanguages,
           })
         );
@@ -132,9 +133,9 @@ export default function ReactMirador() {
         defaultSearchQuery: q ?? undefined,
       };
       if (!firstWindow) {
-        viewerInstance.store.dispatch(actions.addWindow(windowConfig));
-      } else {
-        viewerInstance.store.dispatch(actions.updateWindow(firstWindow.id, windowConfig));
+        viewerInstance.store.dispatch(addWindow(windowConfig));
+      } else if (firstWindow.manifestId !== currentManifest.id) {
+        viewerInstance.store.dispatch(updateWindow(firstWindow.id, windowConfig));
       }
     }
   }, [viewerInstance, currentManifest]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -148,12 +149,12 @@ export default function ReactMirador() {
       const { store } = viewerInstance;
 
       store.dispatch(
-        actions.updateWindow(Object.keys(store.getState().windows)[0], {
+        updateWindow(Object.keys(store.getState().windows)[0], {
           sideBarOpen: !isMobile,
         })
       );
       store.dispatch(
-        actions.setWindowThumbnailPosition(Object.keys(store.getState().windows)[0], isMobile ? 'off' : 'far-right')
+        setWindowThumbnailPosition(Object.keys(store.getState().windows)[0], isMobile ? 'off' : 'far-right')
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,7 +165,7 @@ export default function ReactMirador() {
    */
   const changeLanguage = () => {
     viewerInstance.store.dispatch(
-      actions.updateConfig({
+      updateConfig({
         language: i18next.language,
       })
     );

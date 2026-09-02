@@ -4,7 +4,6 @@ import Nl2br from './Nl2br';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../AppContext';
 import chardet from 'chardet';
-import { Buffer } from 'buffer';
 
 export default function PlainTextViewer() {
   const { currentManifest } = useContext(AppContext);
@@ -18,7 +17,7 @@ export default function PlainTextViewer() {
         let charSet: string | undefined = getCharsetFromHeader(response);
         response.arrayBuffer().then((buffer) => {
           if (!charSet) {
-            charSet = chardet.detect(Buffer.from(buffer)) ?? undefined;
+            charSet = chardet.detect(new Uint8Array(buffer)) ?? undefined;
           }
           const decoder = new TextDecoder(charSet);
           const text = decoder.decode(buffer);

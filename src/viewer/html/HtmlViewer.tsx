@@ -5,7 +5,6 @@ import { AppContext } from '../../AppContext';
 import DOMPurify from 'dompurify';
 import { getCharsetFromHeader } from '../plainText/PlainTextViewer';
 import chardet from 'chardet';
-import { Buffer } from 'buffer';
 
 export default function HtmlViewer() {
   const { currentManifest } = useContext(AppContext);
@@ -35,7 +34,7 @@ export default function HtmlViewer() {
             text = decoder.decode(buffer);
           }
 
-          charSet = chardet.detect(Buffer.from(buffer)) ?? undefined;
+          charSet = chardet.detect(new Uint8Array(buffer)) ?? undefined;
           if (charSet) {
             const decoder = new TextDecoder(charSet);
             const text = decoder.decode(buffer);
